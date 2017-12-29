@@ -59,3 +59,48 @@ default:
     break
 }
 ```
+
+
+
+#### ReplayKit(后续补充)
+
++ A7+
++ IOS9+
+
+ReplayKit不需要太大电量损耗和性能损耗就可以产出高清的视频记录
+
+```
+
+import ReplayKit
+
+// 开始录制
+if RPScreenRecorder.shared().isAvailable{
+    // 是否开启设备的麦克风
+    RPScreenRecorder.shared().isMicrophoneEnabled = true
+    RPScreenRecorder.shared().startRecording(handler: { (err: Error?) in
+        
+    })
+}
+
+
+// 结束录制
+if RPScreenRecorder.shared().isRecording {
+    RPScreenRecorder.shared().stopRecording(handler: { (previewVC: RPPreviewViewController?, err: Error?) in
+        guard let preview = previewVC else{
+            return
+        }
+        let needSave = false
+        if needSave {
+            // 回看
+            self.present(preview, animated: true, completion: {
+                
+            })
+        }else{
+            // 丢弃记录
+            RPScreenRecorder.shared().discardRecording {
+                // ......
+            }
+        }
+    })
+}
+```
